@@ -106,7 +106,6 @@ def solveSudoku(sudokuToSolve, gridSize, subGridHorizontal, subGridVertical):
                     allPossible.append(sudokuEdit)
 
             else:
-                #if sudoku[row][cell] == 0: 
                 copyAllPossible =  copy.deepcopy(allPossible)
                 for possSudoku in copyAllPossible:
                     sudoku = possSudoku
@@ -123,10 +122,6 @@ def solveSudoku(sudokuToSolve, gridSize, subGridHorizontal, subGridVertical):
                             allPossible.append(sudokuEdit)
 
                         del allPossible[0]
-            
-                #else:
-                    pass
-
     printSolutions(allPossible)
 
 #Finds all possible values for the given cell based on the input sudoku
