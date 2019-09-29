@@ -21,30 +21,32 @@ class SudokuUI(Frame):
     def __initUI(self):
         self.parent.title("Sudoku")
         self.pack(fill=BOTH)
-        self.canvas = Canvas(self, width = WIDTH, height = HEIGHT)
+        self.canvas = Canvas(self, width = WIDTH, height = HEIGHT+100)
         self.canvas.pack(fill = BOTH, side = TOP)
-        
+        self.winHeight = self.canvas.winfo_reqheight()
+
         # Button for solving the sudoku
-        solve_button = Button(self, text = "Solve sudoku", command = self.__solve_sudoku)
-        solve_button.pack(fill=BOTH, side=BOTTOM)
+        self.solve_button = Button(self, text = "Solve sudoku", command = self.__solve_sudoku)
+        #self.solve_button.pack(fill=BOTH, side=BOTTOM)
+        self.solve_button.place(y=self.winHeight-37, relwidth=1)
 
         # Button for submiting the sudoku
-        submit_button = Button(self, text = "Submit sudoku", command = self.__sumbit_sudoku)
-        submit_button.pack(fill=BOTH, side=BOTTOM)
+        self.submit_button = Button(self, text = "Submit sudoku", command = self.__sumbit_sudoku)
+#        self.submit_button.pack(fill=BOTH, side=BOTTOM)
+        self.submit_button.place(y=self.winHeight-70, relwidth=1)
 
+        # Inputfield were the user can type in the sudoku
         self.canvas.input_field = Entry(self)
-        self.canvas.input_field.pack(fill=BOTH, side=BOTTOM)
+ #       self.canvas.input_field.pack(fill=BOTH, side=BOTTOM)
+        self.canvas.input_field.place(y=self.winHeight-98, relwidth=1)
         self.canvas.input_field.insert(END, 'Submit your sudoku')
-
         #Create empty board
         board = [3,3]
         for i in range(81):
             board.append(0) 
 
-        
-        self.game = SudokuGame(board)
-        #self.game.start(self.x_size, self.y_size)
-
+        self.game = SudokuBoard(board)
+    
         self.__draw_grid()
         self.__draw_puzzle()
 
@@ -58,7 +60,7 @@ class SudokuUI(Frame):
         valid = 0  
         sudoku = sudoku.replace(".", str(0))
         if not sudoku.isdigit():
-            self.canvas.input_field.insert(END, 'The sudoku can only contain numbers')
+            self.canvas.input_field.insert(END, 'The sudoku can only contain numbers and dots: .')
         
         else:
             self.x_size = int(sudoku[0])    #Number of rows in each subregion on the board (grid)
@@ -78,14 +80,20 @@ class SudokuUI(Frame):
                     sudokuArray.append(i)
                 sudoku = sudokuArray
                 board = sudoku
-                self.game = SudokuGame(board)
-                #self.game.start(self.x_size, self.y_size)
-
+                self.game = SudokuBoard(board)
+                
                 self.__draw_grid()
                 self.__draw_puzzle()
 
     def __draw_grid(self):
         WIDTH = HEIGHT = MARGIN * 2 + SIDE * self.grid_size  # Width and height of the whole board
+        root.geometry('{}x{}'.format(WIDTH, HEIGHT+100))
+        
+        self.winHeight = HEIGHT + 100
+        self.submit_button.place(y=self.winHeight-70, relwidth=1)
+        self.canvas.input_field.place(y=self.winHeight-98, relwidth=1)
+        self.solve_button.place(y=self.winHeight-37, relwidth=1)
+
 
         self.canvas.delete("all")
 
@@ -96,6 +104,14 @@ class SudokuUI(Frame):
             #Horizontal
             color = "black" if i % self.x_size == 0 else "gray"
             LINEWIDTH = 2 if i % self.x_size == 0 else 1
+            # WIDTH = root.winfo_screenwidth()
+            # HEIGHT = root.winfo_screenheight()
+            # margin = MARGIN
+            # height = root.winfo_reqheight()
+            # MARGIN1 = root.winfo_reqheight()-margin + i * SIDE 
+
+
+
             x0 = MARGIN
             y0 = MARGIN + i * SIDE
             x1 = WIDTH - MARGIN
@@ -104,7 +120,7 @@ class SudokuUI(Frame):
             
             #Vertical
             color = "black" if i % self.y_size == 0 else "gray"
-            LINEWIDTH = 2 if i % self.x_size == 0 else 1
+            LINEWIDTH = 2 if i % self.y_size == 0 else 1
             x0 = MARGIN + i * SIDE
             y0 = MARGIN
             x1 = MARGIN + i * SIDE
@@ -120,7 +136,6 @@ class SudokuUI(Frame):
                 if answer != 0:
                     x = MARGIN + j * SIDE + SIDE / 2
                     y = MARGIN + i * SIDE + SIDE / 2
-                #     original = self.game.start_puzzle[i][j]
                     color = "black" #if answer == original else "sea green"
                     self.canvas.create_text(
                         x, y, text=answer, tags="numbers", fill=color
@@ -168,41 +183,13 @@ class SudokuBoard(object):
             sudoku[rowCount][columnCount] = rute #Adds the number to the sudoku
             columnCount += 1 #Increments the column number by one
 
-        #print(str(sudoku) + "\n") #Prints the sudoku  
+        #print(str(sudoku) + "\n") #Prints the sudoku 
+        self.puzzle = sudoku 
         return sudoku, gridSize, horizontalSubGridsInBoard, varticalSubGridsInBoard
-
-    def __input_board(self, board):
-        #Ask the user for a board
-        pass
     
-
-
-class SudokuGame(object):
-
-    """
-    A Sudoku game, in charge of storing the state of the board and checking
-    whether the puzzle is completed.
-    """
-    def __init__(self, board):
-        self.board = board
-        self.start_puzzle = SudokuBoard(board).board
-        self.puzzle = self.start_puzzle
-
-    #Creates a list with empty numbers
-    def start(self, x, y):
-        self.x = x*y
-        self.y = y*x
-        self.puzzle = []
-        for i in range(self.x):
-            self.puzzle.append([])
-            for j in range(self.y):
-                self.puzzle[i].append(self.start_puzzle[i][j])
-
-        print(self.puzzle)
-
 if __name__ == '__main__':
-    #board = "33.63....85.....1......67..34..57.34..6...2...7..91.42..84..39......5.....59....36."
     root = Tk()
     SudokuUI(root)
-    root.geometry("%dx%d" % (WIDTH, HEIGHT + 100))
+    root.geometry("%dx%d" % (WIDTH, HEIGHT+100))
+    root.resizable(width=False, height=False)
     root.mainloop()
