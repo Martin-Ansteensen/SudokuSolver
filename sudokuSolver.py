@@ -5,17 +5,6 @@ import time
 
 start_time = time.time()    #Timer to keep track of execution time
 
-# Datastructure
-# 2 Number of rows in each subregion on the board (grid)
-# 3 Number of columns in each subregion on the board (grid)
-# ..36..    A dot means the cell doesn't have any value
-# .2...4
-# 5...6.
-# .3...5
-# 3...1.
-# ..14..
-
-
 #Asks the user for a input (sudoku)
 def getSudoku():
     inputData = input("Input your sudoku:")
@@ -181,18 +170,10 @@ def printSolutions(sudokuSolutions):
     with open("sudoku.json", "w") as outfile: #Passes the info to the .json
         json.dump(sudokuSolutions, outfile)
 
-#Sample sudokus
-
-#inputData = getSudoku()
-#formatertSudoku, lengde, subGridHorizontal, subGridVertical = readSudoku(inputData)
+# Get the sudoku from the user
 formatertSudoku = {} #Definer at daten fra readSudoku er en dictionary, hvis ikke tolker den det som en string
+inputData = getSudoku()
+formatertSudoku, lengde, subGridHorizontal, subGridVertical = readSudoku(inputData)
 
-#formatertSudoku, lengde, subGridHorizontal, subGridVertical = readSudoku("21....") #2*2 2 mulige løsninger
-#formatertSudoku, lengde, subGridHorizontal, subGridVertical = readSudoku("22................") #4*4 288 løsninger i følge programmet
-#formatertSudoku, lengde, subGridHorizontal, subGridVertical = readSudoku("23..1..3..........2.26.......3..3..1.2") #6*6 28 løsninger i følge uio og programmet
-#formatertSudoku, lengde, subGridHorizontal, subGridVertical = readSudoku("234.1..3..2.......6426.......3..3..1.2") #1 løsning i følge programmet
-
-#formatertSudoku, lengde, subGridHorizontal, subGridVertical = readSudoku("3353..7....6..195....98....6.8...6...34..8.3..17...2...6.6....28....419..5....8..79") #1 løsning i følge programmet
-#formatertSudoku, lengde, subGridHorizontal, subGridVertical = readSudoku("33.63....85.....1......67..34..57.34..6...2...7..91.42..84..39......5.....59....36.") #Dn 3.sep midddels
 solveSudoku(formatertSudoku, lengde, subGridHorizontal, subGridVertical)
 
