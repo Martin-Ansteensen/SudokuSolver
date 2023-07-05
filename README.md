@@ -21,7 +21,11 @@ Input a sudoku in the "Submit sudoku" field and click "Submit sudoku". The sudok
 * 234.1..3..2.......6426.......3..3..1.2 (6*6 sudoku, 1 solution)
 * 3353..7....6..195....98....6.8...6...34..8.3..17...2...6.6....28....419..5....8..79 (9*9 sudoku, 1 solution)
 * 33.63....85.....1......67..34..57.34..6...2...7..91.42..84..39......5.....59....36. (9*9 sudoku, 1 solution)
+![empty-board](https://github.com/Martin-Ansteensen/SudokuSolver/assets/50178947/66fddda7-9371-4671-8f68-9e264d7e1a4c)
+![sudoku-entered](https://github.com/Martin-Ansteensen/SudokuSolver/assets/50178947/2c53f2dd-d9f2-43ca-9255-60a0556542f6)
+![solved_sudoku](https://github.com/Martin-Ansteensen/SudokuSolver/assets/50178947/eaeac937-2ec2-4939-958c-171b8c2709a1)
 
+Martin Ansteensen 2019
 
 
 
